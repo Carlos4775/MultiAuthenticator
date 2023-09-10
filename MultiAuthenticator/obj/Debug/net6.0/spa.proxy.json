@@ -1,8 +1,0 @@
-{
-"SpaProxyServer": {
-"ServerUrl": "",
-"LaunchCommand": "",
-"WorkingDirectory": "C:\\Users\\carlo\\Desktop\\MultiAuthenticator\\MultiAuthenticator",
-"MaxTimeoutInSeconds": "120"
-}
-}
