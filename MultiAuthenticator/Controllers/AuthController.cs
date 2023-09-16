@@ -47,7 +47,7 @@ namespace MultiAuthenticator.Controllers
         [HttpPost("refreshToken")]
         public async Task<IActionResult> Login(RefreshToken refreshToken)
         {
-            User user = await _authenticationService.GetByRefreshTokenAsync(refreshToken.Token);
+            User? user = await _authenticationService.GetByRefreshTokenAsync(refreshToken.Token);
 
             if (user == null)
             {
@@ -68,40 +68,40 @@ namespace MultiAuthenticator.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserLogin userLogin)
+        public async Task<IActionResult> Register(UserRegister userRegister)
         {
-            if (userLogin?.Username == null || userLogin?.Email == null || userLogin?.Password == null)
+            if (userRegister?.Username == null || userRegister?.Email == null || userRegister?.Password == null)
             {
                 return BadRequest(new { message = "An error occurred. Some information was missing." });
             }
 
             // Check if a user with the same username already exists
-            if (await _authenticationService.GetByUsernameAsync(userLogin.Username) != null)
+            if (await _authenticationService.GetByUsernameAsync(userRegister.Username) != null)
             {
                 return BadRequest(new { message = "User with this username already exists." });
             }
 
             // Check if a user with the same email already exists
-            if (await _authenticationService.GetByEmailAsync(userLogin.Email) != null)
+            if (await _authenticationService.GetByEmailAsync(userRegister.Email) != null)
             {
                 return BadRequest(new { message = "User with this email already exists." });
             }
 
             // Hash the password
-            string hashedPassword = _authenticationService.HashPassword(userLogin.Password);
+            string hashedPassword = _authenticationService.HashPassword(userRegister.Password);
 
             // Create a new user
             User newUser = new()
             {
-                Username = userLogin.Username,
-                Email = userLogin.Email,
+                Username = userRegister.Username,
+                Email = userRegister.Email,
                 Password = hashedPassword,
-                Address = userLogin.Address,
-                Gender = userLogin.Gender,
-                Phone = userLogin.Phone,
-                FirstName = userLogin.FirstName,
-                LastName = userLogin.LastName,
-                RoleId = userLogin.RoleId
+                Address = userRegister.Address,
+                Gender = userRegister.Gender,
+                Phone = userRegister.Phone,
+                FirstName = userRegister.FirstName,
+                LastName = userRegister.LastName,
+                RoleId = userRegister.RoleId
             };
 
             // Create a token for the new user
