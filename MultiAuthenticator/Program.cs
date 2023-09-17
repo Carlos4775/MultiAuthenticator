@@ -58,6 +58,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
         googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    })
+    .AddFacebook(facebookOptions => 
+    {
+        facebookOptions.ClientId = builder.Configuration["Authentication:Facebook:ClientId"];
+        facebookOptions.ClientSecret = builder.Configuration["Authentication:Facebook:ClientSecret"];
+        facebookOptions.AccessDeniedPath = "/AccessDeniedPathInfo";
     });
 
 builder.Services.AddCors();
